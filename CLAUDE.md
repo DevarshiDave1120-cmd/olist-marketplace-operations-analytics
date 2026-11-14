@@ -187,6 +187,14 @@ Design choices made in Step 5 (not in the definitions above):
 - Month mix differs: chi-square 1,430.7, dof 13, p = 3.8e-298, Cramér's V = 0.161. Late first
   orders concentrate in 2017-11 (23.9% of late vs 12.0% of on-time; late rate 12.4%) and 2018-02
   (24.3% vs 10.5%; late rate 14.2%). Chart: `images/6b_month_mix.png`.
+- Review timing (same 54,770 reviewed first orders). Per the Kaggle data description,
+  review_creation_date = survey **sent** date; review_answer_timestamp = customer **answered**.
+  - Created (sent) before delivered date: late 76.5% (2,736 of 3,577) vs on-time 0.2% (118 of 51,193).
+    Late orders: mean 1.79 before vs 3.45 on/after (diff −1.67, Mann–Whitney p = 5.2e-162);
+    1–2 star 77.2% vs 27.1%.
+  - Answered before delivered timestamp: late 72.6% (2,597) vs on-time 0.2% (93). Late orders:
+    mean 1.62 answered before vs 3.65 on/after (diff −2.03, p = 1.2e-259); 1–2 star 82.1% vs 21.2%.
+    On-time answered on/after: mean 4.27.
 
 ## Rules
 - **Explain each command before running it.**
