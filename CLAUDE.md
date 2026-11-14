@@ -87,8 +87,13 @@ Committed before any modeling (Step 3). Change only with a new, explained commit
   `review_answer_timestamp`, ties broken by `review_creation_date` then `review_id`. Orders with
   no review are excluded from review analysis only.
 - **First order:** a customer's earliest order by purchase time.
-- **Repeat purchase:** the customer has any later order in the window that is not canceled or
-  unavailable.
+- **Repeat purchase (`repeat_within_180d`):** a qualifying order (not canceled or unavailable)
+  placed after the customer's first order and within 180 days of it (purchase date ≤ first
+  purchase date + 180 days).
+- **Review-impact comparisons (`has_full_followup`):** only first orders purchased 2017-01-01 to
+  2018-02-28, so every customer has a full 180-day follow-up inside the analysis window.
+  *(Changed 2026-11-14, before any analysis: replaces "any later order in the window", which
+  gave later first orders less time to repeat.)*
 - **Cohort retention:** cohort is the month of first purchase. A customer is retained in month N
   if they place a qualifying order N months later, N = 1 to 6. Only cohorts with a full 6 months
   of follow-up are reported: first purchase Jan 2017 to Feb 2018.
