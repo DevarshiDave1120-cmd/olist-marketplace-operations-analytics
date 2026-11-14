@@ -196,6 +196,29 @@ Design choices made in Step 5 (not in the definitions above):
     mean 1.62 answered before vs 3.65 on/after (diff −2.03, p = 1.2e-259); 1–2 star 82.1% vs 21.2%.
     On-time answered on/after: mean 4.27.
 
+### Step 6c results (`notebooks/olist_analysis.ipynb`, computed 2026-11-14)
+- **Retention** (14 cohorts Jan 2017–Feb 2018, 57,184 customers): month 1–6 retention, mean of
+  cohorts 0.48% / 0.35% / 0.25% / 0.31% / 0.23% / 0.26%; pooled 0.48% / 0.36% / 0.26% / 0.29% /
+  0.23% / 0.23%. Highest month-1 cohorts: 2017-08 and 2017-10 (0.69%). Chart: `images/6c_cohort_retention.png`.
+- **Reconciliation** (99,441 orders; total payments BRL 16,008,872.12):
+  matches 98,362 (98.91% of orders; BRL 15,793,088.11, 98.65% of payment value);
+  payment_without_items 775 (0.78%; BRL 162,591.95, 1.02%);
+  installment_interest 249 (0.25%; BRL 37,129.67, 0.23%; net +BRL 3,063.69 over items+freight);
+  unexplained 50 (0.05%; BRL 15,813.72, 0.10%; net −BRL 196.72 — 11 pay more by BRL 2.36 total,
+  39 pay less by BRL 199.08 total); voucher_overpayment 4 (BRL 248.67; net +BRL 4.09);
+  items_without_payment 1 (items+freight BRL 143.46); no_items_no_payments 0.
+  Installment/voucher categories are consistent explanations, not proven causes.
+  Chart: `images/6c_reconciliation_exceptions.png`.
+- **Cost to serve** (97,905 in-window orders with items, not canceled/unavailable): overall freight
+  share 14.25% (BRL 2,234,177.06 of BRL 15,683,706.74). ≥100 orders: 24 of 27 states, 52 of 74 categories.
+  Top states: MA 20.8% (732), RO 19.8% (246), AM 19.7% (147), PI 19.6% (489), SE 19.3% (342).
+  Top categories: christmas_supplies 26.8% (127), signaling_and_security 23.2% (140),
+  food_drink 22.9% (225), electronics 22.8% (2,542), furniture_living_room 20.7% (420).
+  Overlap with top-5 late-rate states (AL, CE, MA, PI, SE): MA, PI, SE (3 of 5; all Northeast).
+  RO and AM have high freight share but low late rates (2.9%, 2.8%). Across 24 states, Spearman
+  ρ(freight share, late rate) = 0.28 (p = 0.189). SP lowest freight share 12.2%.
+  Chart: `images/6c_freight_vs_late_by_state.png`.
+
 ## Rules
 - **Explain each command before running it.**
 - **Never commit credentials or raw data.** No passwords, private keys (`*.p8`, `*.pem`), `.env`
@@ -211,3 +234,4 @@ Design choices made in Step 5 (not in the definitions above):
 - [x] Step 3 — dbt staging (9 models in `OLIST.STAGING`, counts in `docs/staging_counts.md`)
 - [x] Step 4 — star schema in `OLIST.CORE` + dbt tests (40 pass, 1 expected warn)
 - [x] Step 5 — analysis marts in `OLIST.ANALYSIS` + tests (64 pass, 1 expected warn)
+- [x] Step 6 — Python analysis (6a delivery, 6b review impact, 6c retention/reconciliation/cost)
