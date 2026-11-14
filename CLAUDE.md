@@ -114,6 +114,15 @@ Committed before any modeling (Step 3). Change only with a new, explained commit
 - Geolocation: 42 points outside Brazil dropped; 5 zips have no valid point (null coordinates).
 - Products: 610 without category; 13 with an untranslated category (English name falls back to Portuguese).
 
+### Core star schema (Step 4, `docs/core_counts.md`)
+- `OLIST.CORE` tables and grain: dim_customers (customer_unique_id, 96,096), dim_sellers
+  (seller_id, 3,095), dim_products (product_id, 32,951), dim_date (day 2016-01-01..2020-12-31,
+  1,827), fct_orders (order_id, 99,441), fct_order_items (order_id + order_item_id, 112,650).
+- fct_orders aggregates items/payments/reviews to order level before joining; totals equal
+  staging exactly (no fan-out). days_late / is_late are null unless is_delivered_with_date.
+- dbt build: 40 pass, 1 warn. Warn = `assert_every_order_has_item` → 775 orders without items
+  (unavailable 603, canceled 164, created 5, invoiced 2, shipped 1; all have payments).
+
 ## Rules
 - **Explain each command before running it.**
 - **Never commit credentials or raw data.** No passwords, private keys (`*.p8`, `*.pem`), `.env`
@@ -127,3 +136,4 @@ Committed before any modeling (Step 3). Change only with a new, explained commit
 - [x] Step 1 — Snowflake key-pair auth, OLIST_WH / OLIST.RAW, 9 tables loaded, row counts verified
 - [x] Step 2 — raw profile (`scripts/01_profile_raw.py` → `docs/raw_profile.md`)
 - [x] Step 3 — dbt staging (9 models in `OLIST.STAGING`, counts in `docs/staging_counts.md`)
+- [x] Step 4 — star schema in `OLIST.CORE` + dbt tests (40 pass, 1 expected warn)

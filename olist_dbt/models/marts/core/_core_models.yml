@@ -1,0 +1,121 @@
+version: 2
+
+models:
+  - name: dim_customers
+    description: One row per customer_unique_id (the person). Location from the first order.
+    columns:
+      - name: customer_unique_id
+        description: Primary key. The real customer (customer_id changes with every order).
+        data_tests: [unique, not_null]
+      - name: first_order_at
+        description: Purchase timestamp of the customer's earliest order (ties broken by order_id).
+      - name: order_count
+        description: All orders by this customer, any status, any date.
+      - name: order_count_in_window
+        description: Orders purchased inside the analysis window.
+
+  - name: dim_sellers
+    description: One row per seller_id, with median coordinates of the seller zip prefix.
+    columns:
+      - name: seller_id
+        description: Primary key.
+        data_tests: [unique, not_null]
+
+  - name: dim_products
+    description: One row per product_id, with English category.
+    columns:
+      - name: product_id
+        description: Primary key.
+        data_tests: [unique, not_null]
+
+  - name: dim_date
+    description: One row per calendar day, 2016-01-01 to 2020-12-31.
+    columns:
+      - name: date_day
+        description: Primary key.
+        data_tests: [unique, not_null]
+
+  - name: fct_orders
+    description: >
+      One row per order. All orders kept; analyses filter with is_in_analysis_window,
+      is_delivered_with_date and has_impossible_timestamps (see CLAUDE.md definitions).
+    columns:
+      - name: order_id
+        description: Primary key.
+        data_tests: [unique, not_null]
+      - name: customer_unique_id
+        description: Foreign key to dim_customers.
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_customers')
+                field: customer_unique_id
+      - name: order_status
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [delivered, shipped, canceled, unavailable, invoiced, processing, created, approved]
+      - name: purchase_date
+        description: Foreign key to dim_date.
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_date')
+                field: date_day
+      - name: delivered_date
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_date')
+                field: date_day
+      - name: estimated_delivery_date
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_date')
+                field: date_day
+      - name: days_late
+        description: Delivered date minus estimated date in days (negative = early). Null unless delivered with a date.
+      - name: is_late
+        description: Delivered date after estimated date. Null unless delivered with a date.
+      - name: item_total
+        description: Sum of item prices. Null if the order has no items.
+      - name: payment_total
+        description: Sum of payment_value. Null if the order has no payments.
+      - name: review_score
+        description: Score of the order's latest review (is_latest_review_for_order). Null if no review.
+
+  - name: fct_order_items
+    description: One row per order item.
+    columns:
+      - name: order_item_key
+        description: Primary key (order_id || '-' || order_item_id).
+        data_tests: [unique, not_null]
+      - name: order_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('fct_orders')
+                field: order_id
+      - name: product_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_products')
+                field: product_id
+      - name: seller_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_sellers')
+                field: seller_id
+      - name: purchase_date
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_date')
+                field: date_day
