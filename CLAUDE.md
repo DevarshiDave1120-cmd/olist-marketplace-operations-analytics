@@ -164,6 +164,14 @@ Design choices made in Step 5 (not in the definitions above):
 - Distance (95,541 orders; 478 missing a point): late rate 4.5% (0–100 km) → 12.1% (2,000+ km);
   median days late −9 → −14. Spearman ρ(distance, days late) = −0.18; Pearson r = −0.075;
   point-biserial r(distance, is_late) = 0.076. Chart: `images/6a_distance_vs_lateness.png`.
+- Padding test (promised = estimate − purchase date; actual = delivered − purchase date; medians,
+  days) by band 0–100 / 100–250 / 250–500 / 500–1,000 / 1,000–2,000 / 2,000+ km:
+  promised 15 / 20 / 23 / 26 / 30 / 34; actual 5 / 8 / 10 / 12 / 15 / 18; buffer 9 / 12 / 13 /
+  14 / 14 / 14; p90 actual 12 / 16 / 21 / 24 / 30 / 35. Chart: `images/6a_promised_vs_actual.png`.
+- Lanes (≥100 orders) by late-order count: SP→SP 1,426 (4.7%, 21.8% of all late), SP→RJ 1,152
+  (14.2%, 17.6%), SP→MG 393 (5.3%), SP→BA 297 (12.9%), SP→RS 238 (6.7%), SP→SC 222 (9.6%),
+  SP→ES 180 (12.4%), SP→PR 138 (4.4%), SP→CE 133 (13.8%), PR→RJ 117 (12.1%). Top 2 = 39.5% of
+  late orders; top 10 = 65.8%.
 
 ## Rules
 - **Explain each command before running it.**
