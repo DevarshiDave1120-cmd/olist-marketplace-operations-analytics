@@ -1,0 +1,21 @@
+name: olist_dbt
+version: "1.0.0"
+config-version: 2
+profile: olist_dbt
+
+model-paths: ["models"]
+macro-paths: ["macros"]
+test-paths: ["tests"]
+target-path: "target"
+clean-targets: ["target", "dbt_packages"]
+
+# Analysis window (see CLAUDE.md "Analysis definitions"). Inclusive dates.
+vars:
+  analysis_start_date: "2017-01-01"
+  analysis_end_date: "2018-08-31"
+
+models:
+  olist_dbt:
+    staging:
+      +schema: staging
+      +materialized: view

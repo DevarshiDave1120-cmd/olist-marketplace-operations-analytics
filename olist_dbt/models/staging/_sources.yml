@@ -1,0 +1,17 @@
+version: 2
+
+sources:
+  - name: raw
+    database: OLIST
+    schema: RAW
+    description: Olist CSVs loaded unchanged by scripts/00_load_raw.py.
+    tables:
+      - name: customers
+      - name: geolocation
+      - name: order_items
+      - name: order_payments
+      - name: order_reviews
+      - name: orders
+      - name: products
+      - name: sellers
+      - name: product_category_name_translation

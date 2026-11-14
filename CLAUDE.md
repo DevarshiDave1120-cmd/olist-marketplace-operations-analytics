@@ -98,6 +98,22 @@ Committed before any modeling (Step 3). Change only with a new, explained commit
 - **Geolocation point:** median lat/long per zip prefix, after dropping points outside Brazil
   (lat -34 to 5.5, lng -74 to -34).
 
+## dbt
+- Project: `olist_dbt/` (dbt Core 1.12, dbt-snowflake). Profile `olist_dbt` in `~/.dbt/profiles.yml`
+  (key-pair, not in repo). Run dbt commands from inside `olist_dbt/`.
+- Schemas: custom schema names used as-is (`macros/generate_schema_name.sql`) → `OLIST.STAGING`,
+  later `OLIST.CORE`, `OLIST.ANALYSIS`.
+- Analysis window lives in `dbt_project.yml` vars `analysis_start_date` / `analysis_end_date`.
+
+### Staging counts (Step 3, `docs/staging_counts.md`)
+- All 9 staging models match raw row counts (stg_geolocation = 19,015 = distinct zip prefixes).
+- Orders in analysis window: 99,092. Delivered with date: 96,470. Impossible timestamps: 189.
+- Delivery-metric base: 96,203 in window and delivered with date; 184 of those excluded for
+  impossible timestamps → 96,019.
+- One latest review per reviewed order: 98,673.
+- Geolocation: 42 points outside Brazil dropped; 5 zips have no valid point (null coordinates).
+- Products: 610 without category; 13 with an untranslated category (English name falls back to Portuguese).
+
 ## Rules
 - **Explain each command before running it.**
 - **Never commit credentials or raw data.** No passwords, private keys (`*.p8`, `*.pem`), `.env`
@@ -110,3 +126,4 @@ Committed before any modeling (Step 3). Change only with a new, explained commit
 - [x] Step 0 — repo, conda env, .gitignore, raw CSVs in `data/raw/`
 - [x] Step 1 — Snowflake key-pair auth, OLIST_WH / OLIST.RAW, 9 tables loaded, row counts verified
 - [x] Step 2 — raw profile (`scripts/01_profile_raw.py` → `docs/raw_profile.md`)
+- [x] Step 3 — dbt staging (9 models in `OLIST.STAGING`, counts in `docs/staging_counts.md`)
