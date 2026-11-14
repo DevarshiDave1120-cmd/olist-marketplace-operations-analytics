@@ -22,6 +22,31 @@ in a **Tableau Public** dashboard. Everything lives in this public GitHub repo.
 - Raw data: the 9 Olist CSVs live in `data/raw/` (git-ignored, never committed)
 - `olist_project_guide.md` is a local build guide (git-ignored)
 
+## Snowflake (settings only — no secrets)
+- **Trial ends around Dec 14, 2026.** Finish Steps 1–5 (and export marts) before then.
+- Account identifier: `SCKLCWV-CS18531` (locator `QT02634`, region AWS_US_EAST_2)
+- User: `DAVEDEV1120`, role: `SYSADMIN`
+- Auth: key-pair (`SNOWFLAKE_JWT`). Private key `~/.snowflake/rsa_key.p8` (outside repo, chmod 600);
+  public key registered via `ALTER USER ... SET RSA_PUBLIC_KEY` in Snowsight.
+- Connection config: `[olist]` in `~/.snowflake/connections.toml` — Python uses
+  `snowflake.connector.connect(connection_name="olist")`.
+- Warehouse `OLIST_WH` (XSMALL, AUTO_SUSPEND = 60, AUTO_RESUME = TRUE)
+- Database `OLIST`, schema `RAW` — 9 tables loaded by `scripts/00_load_raw.py`
+  (original column names, typed; zip prefixes VARCHAR to keep leading zeros)
+
+### Raw load row counts (CSV = Snowflake, verified 2026-11-14)
+| Table | Rows |
+|---|---:|
+| CUSTOMERS | 99,441 |
+| GEOLOCATION | 1,000,163 |
+| ORDER_ITEMS | 112,650 |
+| ORDER_PAYMENTS | 103,886 |
+| ORDER_REVIEWS | 99,224 |
+| ORDERS | 99,441 |
+| PRODUCTS | 32,951 |
+| SELLERS | 3,095 |
+| PRODUCT_CATEGORY_NAME_TRANSLATION | 71 |
+
 ## Rules
 - **Explain each command before running it.**
 - **Never commit credentials or raw data.** No passwords, private keys (`*.p8`, `*.pem`), `.env`
@@ -32,3 +57,4 @@ in a **Tableau Public** dashboard. Everything lives in this public GitHub repo.
 
 ## Progress
 - [x] Step 0 — repo, conda env, .gitignore, raw CSVs in `data/raw/`
+- [x] Step 1 — Snowflake key-pair auth, OLIST_WH / OLIST.RAW, 9 tables loaded, row counts verified
