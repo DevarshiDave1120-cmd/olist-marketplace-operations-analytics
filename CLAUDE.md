@@ -153,6 +153,18 @@ Design choices made in Step 5 (not in the definitions above):
   unexplained (all underpayments and other overpayments). 5–6 are consistent-with, not proven.
 - dbt build: 64 pass, 1 warn (the known 775 orders without items).
 
+### Step 6a results — delivery (`notebooks/olist_analysis.ipynb`, computed 2026-11-14)
+- Delivery base 96,019 (96,203 delivered in window; 184 excluded for impossible timestamps).
+- Late rate 6.80% (6,529 orders; 95% Wilson CI 6.64%–6.96%). Median days late −12 (mean −11.8).
+- Rankings use ≥100 orders: 70 of 410 lanes (94.7% of base), 24 of 27 customer states.
+- Worst lanes: SP→AL 23.9% (255), MA→SP 20.2% (124), SP→MA 19.1% (486), SP→PI 16.6% (326),
+  SP→SE 16.5% (206), PR→BA 14.7% (143), SP→RJ 14.2% (8,124), SP→CE 13.8% (967),
+  SP→BA 12.9% (2,302), SP→MS 12.4% (475).
+- Worst customer states: AL 21.5% (396), MA 17.6% (710), SE 15.4% (331), PI 14.0% (472), CE 13.8% (1,272).
+- Distance (95,541 orders; 478 missing a point): late rate 4.5% (0–100 km) → 12.1% (2,000+ km);
+  median days late −9 → −14. Spearman ρ(distance, days late) = −0.18; Pearson r = −0.075;
+  point-biserial r(distance, is_late) = 0.076. Chart: `images/6a_distance_vs_lateness.png`.
+
 ## Rules
 - **Explain each command before running it.**
 - **Never commit credentials or raw data.** No passwords, private keys (`*.p8`, `*.pem`), `.env`
