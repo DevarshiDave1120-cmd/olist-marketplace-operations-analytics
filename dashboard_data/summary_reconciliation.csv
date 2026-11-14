@@ -1,0 +1,8 @@
+reason_category,orders,payment_value_brl,items_plus_freight_brl,net_difference_brl,share_of_orders,share_of_payment_value,is_inferred_explanation
+matches,98362,15793088.11,15793088.78,-0.67,0.989149,0.986521,False
+installment_interest,249,37129.67,34065.98,3063.69,0.002504,0.002319,True
+voucher_overpayment,4,248.67,244.58,4.09,4e-05,1.6e-05,True
+unexplained,50,15813.72,16010.44,-196.72,0.000503,0.000988,False
+payment_without_items,775,162591.95,0.0,0.0,0.007794,0.010156,False
+items_without_payment,1,0.0,143.46,0.0,1e-05,0.0,False
+no_items_no_payments,0,0.0,0.0,0.0,0.0,0.0,False

@@ -1,6 +1,10 @@
 # Raw data (never commit)
 data/raw/
 *.csv
+# Exception: small analysis-mart exports for Tableau Public are committed
+!dashboard_data/*.csv
+# ...except large order-level exports, kept locally only
+dashboard_data/local/
 
 # Credentials / secrets
 *.p8

@@ -1,0 +1,5 @@
+delivery_group,review_timing,reviews,mean_score,low_star_share
+late,answered before delivery,2597,1.621101,0.820562
+late,answered on/after delivery,980,3.65102,0.212245
+on-time,answered before delivery,93,4.064516,0.11828
+on-time,answered on/after delivery,51100,4.2691,0.094521

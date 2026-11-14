@@ -1,0 +1,17 @@
+metric,value,unit,definition
+delivery_base_orders,96019.0,orders,"delivered, in window, no impossible timestamps"
+late_rate,0.067997,share,delivery base
+median_days_early,12.0,days,delivery base; median of estimate minus delivered date
+avg_review_late,2.177244,score 1-5,"first orders, full follow-up, reviewed"
+avg_review_on_time,4.268728,score 1-5,"first orders, full follow-up, reviewed"
+low_star_share_late,0.6539,share,share of 1-2 star reviews
+low_star_share_on_time,0.094564,share,share of 1-2 star reviews
+repeat_rate_180d_late,0.026747,share,"first orders, full follow-up"
+repeat_rate_180d_on_time,0.031971,share,"first orders, full follow-up"
+repeat_rate_180d_all,0.031624,share,"first orders, full follow-up, in delivery base"
+retention_month_1_mean,0.004834,share,mean of 14 cohort rates
+retention_month_6_mean,0.002552,share,mean of 14 cohort rates
+retention_month_1_pooled,0.004827,share,all cohort customers pooled
+retention_month_6_pooled,0.002273,share,all cohort customers pooled
+freight_share,0.142452,share,"freight / (items + freight), cost-to-serve base"
+reconciliation_match_rate,0.989149,share,orders with |payment - (items + freight)| <= 0.01

@@ -167,7 +167,7 @@ Design choices made in Step 5 (not in the definitions above):
 - Padding test (promised = estimate − purchase date; actual = delivered − purchase date; medians,
   days) by band 0–100 / 100–250 / 250–500 / 500–1,000 / 1,000–2,000 / 2,000+ km:
   promised 15 / 20 / 23 / 26 / 30 / 34; actual 5 / 8 / 10 / 12 / 15 / 18; buffer 9 / 12 / 13 /
-  14 / 14 / 14; p90 actual 12 / 16 / 21 / 24 / 30 / 35. Chart: `images/6a_promised_vs_actual.png`.
+  14 / 14 / 14; p90 actual 12 / 16.5 / 21 / 24 / 30 / 35. Chart: `images/6a_promised_vs_actual.png`.
 - Lanes (≥100 orders) by late-order count: SP→SP 1,426 (4.7%, 21.8% of all late), SP→RJ 1,152
   (14.2%, 17.6%), SP→MG 393 (5.3%), SP→BA 297 (12.9%), SP→RS 238 (6.7%), SP→SC 222 (9.6%),
   SP→ES 180 (12.4%), SP→PR 138 (4.4%), SP→CE 133 (13.8%), PR→RJ 117 (12.1%). Top 2 = 39.5% of
@@ -184,6 +184,8 @@ Design choices made in Step 5 (not in the definitions above):
   (Newcombe 95% CI +54.34 to +57.50); p < 1e-300. Within-month CMH OR 17.37 (16.09–18.76), p < 1e-300.
 - Repeat within 180 days (two-proportion z): late 2.67% vs on-time 3.20%; difference −0.52 pts
   (95% CI −1.02 to +0.07); p = 0.081 — not significant. Within-month CMH OR 0.84 (0.68–1.03), p = 0.097.
+  Overall repeat within 180 days (late + on-time, 55,179 customers): 3.16% (computed in
+  `scripts/05_export_summaries.py`).
 - Month mix differs: chi-square 1,430.7, dof 13, p = 3.8e-298, Cramér's V = 0.161. Late first
   orders concentrate in 2017-11 (23.9% of late vs 12.0% of on-time; late rate 12.4%) and 2018-02
   (24.3% vs 10.5%; late rate 14.2%). Chart: `images/6b_month_mix.png`.
@@ -194,7 +196,8 @@ Design choices made in Step 5 (not in the definitions above):
     1–2 star 77.2% vs 27.1%.
   - Answered before delivered timestamp: late 72.6% (2,597) vs on-time 0.2% (93). Late orders:
     mean 1.62 answered before vs 3.65 on/after (diff −2.03, p = 1.2e-259); 1–2 star 82.1% vs 21.2%.
-    On-time answered on/after: mean 4.27.
+    On-time: answered before 93 (mean 4.06, 1–2 star 11.8%); answered on/after 51,100 (mean 4.27,
+    1–2 star 9.5%).
 
 ### Step 6c results (`notebooks/olist_analysis.ipynb`, computed 2026-11-14)
 - **Retention** (14 cohorts Jan 2017–Feb 2018, 57,184 customers): month 1–6 retention, mean of
@@ -218,6 +221,15 @@ Design choices made in Step 5 (not in the definitions above):
   RO and AM have high freight share but low late rates (2.9%, 2.8%). Across 24 states, Spearman
   ρ(freight share, late rate) = 0.28 (p = 0.189). SP lowest freight share 12.2%.
   Chart: `images/6c_freight_vs_late_by_state.png`.
+
+## Dashboard data (Step 7 prep, `dashboard_data/`)
+- Committed: small marts (`mart_cohort_retention`, `mart_cost_to_serve`, `mart_delivery_performance`)
+  from `scripts/04_export_marts.py`, and summary tables `summary_kpis`, `summary_distance_bins`,
+  `summary_review_timing`, `summary_reconciliation`, `summary_lanes` from
+  `scripts/05_export_summaries.py` (all files < 30 KB).
+- `scripts/05_export_summaries.py` recomputes every summary value from Snowflake and checks it
+  against the numbers in this file (150 checks, all match on 2026-11-14).
+- Not committed: order-level marts (10–20 MB each) in `dashboard_data/local/` (git-ignored).
 
 ## Rules
 - **Explain each command before running it.**
