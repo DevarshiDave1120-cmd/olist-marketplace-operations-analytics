@@ -123,6 +123,31 @@ Committed before any modeling (Step 3). Change only with a new, explained commit
 - dbt build: 40 pass, 1 warn. Warn = `assert_every_order_has_item` → 775 orders without items
   (unavailable 603, canceled 164, created 5, invoiced 2, shipped 1; all have payments).
 
+### Analysis marts (Step 5, `OLIST.ANALYSIS`) — row counts only, no metrics reported yet
+| Mart | Grain | Rows |
+|---|---|---:|
+| mart_delivery_orders | order in delivery base | 96,019 |
+| mart_delivery_performance | (dimension, group): customer_state 27, seller_state 22, lane 410, purchase_month 20 | 479 |
+| mart_review_impact | customer's first order (customer_unique_id) | 96,096 |
+| mart_cohort_retention | (cohort_month Jan 2017–Feb 2018, month_number 1–6) | 84 |
+| mart_payment_reconciliation | order (all orders) | 99,441 |
+| mart_cost_to_serve | (dimension, group): customer_state 27, product_category 74 | 101 |
+
+Design choices made in Step 5 (not in the definitions above):
+- **Primary seller:** for lane / seller_state / distance, an order uses the seller with the largest
+  price + freight in the order (ties → lowest order_item_id); `is_multi_seller` flags the 1,249
+  base orders with >1 seller (499 with sellers in >1 state).
+- **Distance:** Snowflake `HAVERSINE()` (km) between seller and customer zip median points; null
+  if either point is missing.
+- **Cohort size:** all customers whose first purchase falls in the month, any status.
+- **Cost-to-serve base:** in-window orders with items, not canceled/unavailable. Category is
+  item-level; untranslated categories use the Portuguese name; no category → `unknown`.
+- **Reconciliation categories** (first match wins): no_items_no_payments → payment_without_items
+  → items_without_payment → matches (|diff| ≤ 0.01) → installment_interest (pays more + credit
+  card with >1 installment) → voucher_overpayment (pays more + voucher, no installments) →
+  unexplained (all underpayments and other overpayments). 5–6 are consistent-with, not proven.
+- dbt build: 64 pass, 1 warn (the known 775 orders without items).
+
 ## Rules
 - **Explain each command before running it.**
 - **Never commit credentials or raw data.** No passwords, private keys (`*.p8`, `*.pem`), `.env`
@@ -137,3 +162,4 @@ Committed before any modeling (Step 3). Change only with a new, explained commit
 - [x] Step 2 — raw profile (`scripts/01_profile_raw.py` → `docs/raw_profile.md`)
 - [x] Step 3 — dbt staging (9 models in `OLIST.STAGING`, counts in `docs/staging_counts.md`)
 - [x] Step 4 — star schema in `OLIST.CORE` + dbt tests (40 pass, 1 expected warn)
+- [x] Step 5 — analysis marts in `OLIST.ANALYSIS` + tests (64 pass, 1 expected warn)

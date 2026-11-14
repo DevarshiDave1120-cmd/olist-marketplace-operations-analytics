@@ -1,0 +1,84 @@
+version: 2
+
+models:
+  - name: mart_delivery_orders
+    description: >
+      One row per order in the delivery-metrics base (window, delivered with date, no impossible
+      timestamps). Seller = primary seller (largest price + freight). distance_km = haversine
+      between seller and customer zip median points; null if either point is missing.
+    columns:
+      - name: order_id
+        data_tests:
+          - unique
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('fct_orders')
+                field: order_id
+      - name: is_multi_seller
+        description: Order has items from more than one seller.
+
+  - name: mart_delivery_performance
+    description: Late rate, avg days late and avg distance per group; one row per (dimension, group_value).
+    data_tests:
+      - unique_combination:
+          arguments:
+            columns: [dimension, group_value]
+    columns:
+      - name: dimension
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [customer_state, seller_state, lane, purchase_month]
+      - name: group_value
+        data_tests: [not_null]
+
+  - name: mart_review_impact
+    description: >
+      One row per customer's first order. Filter is_in_delivery_base for is_late, has_review for
+      review_score. made_repeat_purchase = later order in window, not canceled/unavailable.
+    columns:
+      - name: customer_unique_id
+        data_tests: [unique, not_null]
+
+  - name: mart_cohort_retention
+    description: One row per (cohort_month, month_number 1-6); cohorts Jan 2017 - Feb 2018 only.
+    data_tests:
+      - unique_combination:
+          arguments:
+            columns: [cohort_month, month_number]
+    columns:
+      - name: month_number
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [1, 2, 3, 4, 5, 6]
+                quote: false
+
+  - name: mart_payment_reconciliation
+    description: One row per order with payment vs items + freight and exactly one reason_category.
+    columns:
+      - name: order_id
+        data_tests: [unique, not_null]
+      - name: reason_category
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [no_items_no_payments, payment_without_items, items_without_payment,
+                         matches, installment_interest, voucher_overpayment, unexplained]
+
+  - name: mart_cost_to_serve
+    description: >
+      Freight share by customer_state and product_category; one row per (dimension, group_value).
+      Base: in-window orders with items, not canceled/unavailable.
+    data_tests:
+      - unique_combination:
+          arguments:
+            columns: [dimension, group_value]
+    columns:
+      - name: dimension
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [customer_state, product_category]

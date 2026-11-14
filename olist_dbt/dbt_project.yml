@@ -23,3 +23,6 @@ models:
       core:
         +schema: core
         +materialized: table
+      analysis:
+        +schema: analysis
+        +materialized: table
