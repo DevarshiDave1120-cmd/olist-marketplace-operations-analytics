@@ -35,11 +35,18 @@ models:
 
   - name: mart_review_impact
     description: >
-      One row per customer's first order. Filter is_in_delivery_base for is_late, has_review for
-      review_score. made_repeat_purchase = later order in window, not canceled/unavailable.
+      One row per customer's first order. Review-impact comparisons use has_full_followup rows
+      (first purchase 2017-01-01..2018-02-28). Filter is_in_delivery_base for is_late, has_review
+      for review_score.
     columns:
       - name: customer_unique_id
         data_tests: [unique, not_null]
+      - name: has_full_followup
+        description: First purchase 2017-01-01..2018-02-28, so a full 180-day follow-up exists.
+        data_tests: [not_null]
+      - name: repeat_within_180d
+        description: Later order, not canceled/unavailable, purchased within 180 days of the first.
+        data_tests: [not_null]
 
   - name: mart_cohort_retention
     description: One row per (cohort_month, month_number 1-6); cohorts Jan 2017 - Feb 2018 only.
