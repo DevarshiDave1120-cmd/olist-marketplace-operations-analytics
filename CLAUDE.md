@@ -173,6 +173,21 @@ Design choices made in Step 5 (not in the definitions above):
   SP→ES 180 (12.4%), SP→PR 138 (4.4%), SP→CE 133 (13.8%), PR→RJ 117 (12.1%). Top 2 = 39.5% of
   late orders; top 10 = 65.8%.
 
+### Step 6b results — review impact (`notebooks/olist_analysis.ipynb`, computed 2026-11-14)
+- Population: 96,096 first orders → 57,184 with full follow-up → 55,179 in delivery base
+  (3,664 late, 51,515 on-time) → 54,770 with a review (3,577 late, 51,193 on-time).
+- Review score (Mann–Whitney U, ordinal): late mean 2.18 vs on-time 4.27; difference −2.09
+  (Welch 95% CI −2.14 to −2.04); p < 1e-300; P(late scores higher) = 0.172.
+  Score mix late vs on-time: 1★ 56.6% vs 6.6%, 2★ 8.8% vs 2.8%, 3★ 10.2% vs 8.6%,
+  4★ 9.1% vs 20.9%, 5★ 15.3% vs 61.0%.
+- Share of 1–2 star (two-proportion z): late 65.39% vs on-time 9.46%; difference +55.93 pts
+  (Newcombe 95% CI +54.34 to +57.50); p < 1e-300. Within-month CMH OR 17.37 (16.09–18.76), p < 1e-300.
+- Repeat within 180 days (two-proportion z): late 2.67% vs on-time 3.20%; difference −0.52 pts
+  (95% CI −1.02 to +0.07); p = 0.081 — not significant. Within-month CMH OR 0.84 (0.68–1.03), p = 0.097.
+- Month mix differs: chi-square 1,430.7, dof 13, p = 3.8e-298, Cramér's V = 0.161. Late first
+  orders concentrate in 2017-11 (23.9% of late vs 12.0% of on-time; late rate 12.4%) and 2018-02
+  (24.3% vs 10.5%; late rate 14.2%). Chart: `images/6b_month_mix.png`.
+
 ## Rules
 - **Explain each command before running it.**
 - **Never commit credentials or raw data.** No passwords, private keys (`*.p8`, `*.pem`), `.env`
