@@ -1,4 +1,4 @@
--- Grain: one row per customer_unique_id (the person; CLAUDE.md "Customer").
+-- Grain: one row per customer_unique_id (the person; docs/analysis_definitions.md "Customer").
 -- Location attributes are taken from the customer's first order.
 with orders as (
     select o.order_id, o.purchased_at, o.is_in_analysis_window,

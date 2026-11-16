@@ -1,4 +1,4 @@
--- Grain: one row per order in the delivery-metrics base (CLAUDE.md "Delivery metrics use"):
+-- Grain: one row per order in the delivery-metrics base (docs/analysis_definitions.md "Delivery metrics use"):
 -- in analysis window, delivered with a date, no impossible timestamps.
 -- Seller = primary seller (largest price + freight in the order; ties -> lowest order_item_id).
 with base as (

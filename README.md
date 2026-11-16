@@ -42,7 +42,7 @@ An end-to-end analysis of ~100K real orders from Olist, a Brazilian e-commerce m
 - **Raw data is not in this repo.** Download it from Kaggle into `data/raw/` (git-ignored).
 - **Analysis window:** orders purchased **2017-01-01 to 2018-08-31**. This excludes thin months at both ends: 2016-09 to 2016-12, and 2018-09 to 2018-10.
 
-All definitions (late, customer, repeat purchase, cohort, payment match, and so on) were written down before modeling, and are in [CLAUDE.md](CLAUDE.md#analysis-definitions).
+All definitions (late, customer, repeat purchase, cohort, payment match, and so on) were written down before modeling, and are in [docs/analysis_definitions.md](docs/analysis_definitions.md).
 
 ---
 
@@ -212,7 +212,7 @@ Tableau Public can't connect to Snowflake, so the dashboard reads [tableau/olist
    ```bash
    python scripts/06_build_tableau_workbook.py
    ```
-   `05_export_summaries.py` re-checks 150 values against the results recorded in `CLAUDE.md`.
+   `05_export_summaries.py` re-checks 150 values against the recorded Step 6 results.
 
 **Never commit credentials or raw data.** `.gitignore` excludes `data/raw/`, `*.p8`, `*.pem`, and `.env`.
 
@@ -227,6 +227,8 @@ Tableau Public can't connect to Snowflake, so the dashboard reads [tableau/olist
 | Analysis | Python 3.11: pandas, SciPy, statsmodels (Mann–Whitney U, two-proportion z, Newcombe CIs, Cochran–Mantel–Haenszel) |
 | Visualization | matplotlib (notebook charts), Tableau Public (dashboard) |
 | Workflow | Git/GitHub, conda, Jupyter |
+
+Built with Claude Code as a coding assistant. The analysis definitions, decisions, and recommendation memo are my own.
 
 ## Repo layout
 

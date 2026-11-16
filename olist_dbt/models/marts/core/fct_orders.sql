@@ -47,7 +47,7 @@ select
     o.delivered_to_customer_at::date   as delivered_date,
     o.estimated_delivery_date,
 
-    -- CLAUDE.md: Days late / Late compare dates, only for delivered orders with a date.
+    -- docs/analysis_definitions.md: Days late / Late compare dates, only for delivered orders with a date.
     iff(o.is_delivered_with_date,
         datediff(day, o.estimated_delivery_date, o.delivered_to_customer_at::date), null)
         as days_late,

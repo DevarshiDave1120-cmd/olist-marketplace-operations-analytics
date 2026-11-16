@@ -1,5 +1,5 @@
 -- One row per raw review row; key is (review_id, order_id) because review_id repeats
--- across orders. Flag picks one review per order (CLAUDE.md "Review for an order").
+-- across orders. Flag picks one review per order (docs/analysis_definitions.md "Review for an order").
 with renamed as (
     select
         review_id,

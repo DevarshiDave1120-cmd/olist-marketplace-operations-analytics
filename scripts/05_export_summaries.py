@@ -1,7 +1,7 @@
 """Step 7 prep: small summary tables for Tableau Public, written to dashboard_data/summary_*.csv.
 
 Recomputes each number from OLIST.ANALYSIS (same logic as notebooks/olist_analysis.ipynb), then
-checks every value against the numbers recorded in CLAUDE.md (Step 6 results), rounded to the
+checks every value against the numbers recorded in the project notes (Step 6 results), rounded to the
 precision recorded there. Exits non-zero on any mismatch.
 
 Run from the repo root:  conda run -n olist python scripts/05_export_summaries.py
@@ -152,8 +152,8 @@ for name, df in files.items():
             df[c] = df[c].round(6)
     df.to_csv(OUT / name, index=False)
 
-# --- Check against CLAUDE.md --------------------------------------------------------------------
-# Values transcribed from CLAUDE.md "Step 6a/6b/6c results"; pct = compare value*100.
+# --- Check against recorded results -------------------------------------------------------------
+# Values transcribed from the recorded Step 6a/6b/6c results; pct = compare value*100.
 fails, checks = [], 0
 
 
@@ -162,7 +162,7 @@ def check(label, actual, expected, decimals=0, pct=False):
     checks += 1
     a = float(actual) * (100 if pct else 1)
     if round(a, decimals) != round(expected, decimals):
-        fails.append(f"{label}: file {a:.{decimals + 2}f} vs CLAUDE.md {expected}")
+        fails.append(f"{label}: file {a:.{decimals + 2}f} vs recorded {expected}")
 
 
 k = kpis.set_index("metric").value
@@ -251,7 +251,7 @@ print(f"\n{'file':<32}{'rows':>6}{'size KB':>10}")
 for name, df in files.items():
     print(f"{name:<32}{len(df):>6}{(OUT / name).stat().st_size / 1e3:>10.1f}")
 check("repeat all", k.repeat_rate_180d_all, 3.16, 2, True)
-print(f"checks against CLAUDE.md: {checks - len(fails)} of {checks} match")
+print(f"checks against recorded results: {checks - len(fails)} of {checks} match")
 for f in fails:
     print("  MISMATCH", f)
 sys.exit(1 if fails else 0)

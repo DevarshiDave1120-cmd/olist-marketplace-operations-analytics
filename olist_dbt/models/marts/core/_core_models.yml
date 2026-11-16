@@ -38,7 +38,7 @@ models:
   - name: fct_orders
     description: >
       One row per order. All orders kept; analyses filter with is_in_analysis_window,
-      is_delivered_with_date and has_impossible_timestamps (see CLAUDE.md definitions).
+      is_delivered_with_date and has_impossible_timestamps (see docs/analysis_definitions.md).
     columns:
       - name: order_id
         description: Primary key.

@@ -1,4 +1,4 @@
--- One row per order. All raw rows kept; flags follow CLAUDE.md "Analysis definitions".
+-- One row per order. All raw rows kept; flags follow docs/analysis_definitions.md "Analysis definitions".
 with source as (
     select * from {{ source('raw', 'orders') }}
 ),

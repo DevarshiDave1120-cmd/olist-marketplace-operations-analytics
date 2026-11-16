@@ -1,6 +1,6 @@
 -- Grain: one row per (dimension, group_value), dimension in customer_state | product_category.
 -- Base: orders in the analysis window, with items, status not canceled/unavailable.
--- Freight share = freight total / (item total + freight total) (CLAUDE.md "Freight share").
+-- Freight share = freight total / (item total + freight total) (docs/analysis_definitions.md "Freight share").
 -- Category is item-level, so an order can count in several categories; order_count is distinct orders.
 with base_items as (
     select

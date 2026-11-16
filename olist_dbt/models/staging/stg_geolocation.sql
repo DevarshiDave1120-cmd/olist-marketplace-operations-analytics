@@ -2,7 +2,7 @@
 
 -- One row per zip prefix (grain change from ~1M raw rows).
 -- Point = median lat / median lng of the zip's points inside Brazil's bounding box
--- (lat -34 to 5.5, lng -74 to -34); see CLAUDE.md "Geolocation point".
+-- (lat -34 to 5.5, lng -74 to -34); see docs/analysis_definitions.md "Geolocation point".
 -- Zips whose points are all outside the box keep a row with null coordinates.
 with source as (
     select

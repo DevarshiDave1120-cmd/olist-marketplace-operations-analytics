@@ -1,10 +1,10 @@
--- Grain: one row per customer's first order (one per customer_unique_id; CLAUDE.md "First order").
+-- Grain: one row per customer's first order (one per customer_unique_id; docs/analysis_definitions.md "First order").
 -- All customers kept; filter with the flags:
 --   has_full_followup   -> first purchase 2017-01-01..2018-02-28 (full 180-day follow-up);
 --                          review-impact comparisons use only these rows.
 --   is_in_delivery_base -> is_late is meaningful; has_review -> review_score is meaningful.
 -- repeat_within_180d = a later order, not canceled/unavailable, purchased within 180 days
--- of the first purchase date (CLAUDE.md "Repeat purchase").
+-- of the first purchase date (docs/analysis_definitions.md "Repeat purchase").
 with orders as (
     select o.*,
            row_number() over (partition by customer_unique_id
