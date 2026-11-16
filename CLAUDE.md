@@ -151,7 +151,11 @@ Design choices made in Step 5 (not in the definitions above):
   → items_without_payment → matches (|diff| ≤ 0.01) → installment_interest (pays more + credit
   card with >1 installment) → voucher_overpayment (pays more + voucher, no installments) →
   unexplained (all underpayments and other overpayments). 5–6 are consistent-with, not proven.
-- dbt build: 64 pass, 1 warn (the known 775 orders without items).
+- dbt build (last full run 2026-11-14, `target/run_results.json`): 21 models built; 46 tests, of which
+  45 pass and 1 warns (the known 775 orders without items). The 46 tests are 43 generic (17 not_null,
+  9 unique, 9 relationships, 5 accepted_values, 3 unique_combination) and 3 singular.
+  *(Corrected 2026-11-16: this line said "64 pass, 1 warn", which matched neither the test count nor
+  the node count, 66 pass + 1 warn.)*
 
 ### Step 6a results — delivery (`notebooks/olist_analysis.ipynb`, computed 2026-11-14)
 - Delivery base 96,019 (96,203 delivered in window; 184 excluded for impossible timestamps).
@@ -245,5 +249,5 @@ Design choices made in Step 5 (not in the definitions above):
 - [x] Step 2 — raw profile (`scripts/01_profile_raw.py` → `docs/raw_profile.md`)
 - [x] Step 3 — dbt staging (9 models in `OLIST.STAGING`, counts in `docs/staging_counts.md`)
 - [x] Step 4 — star schema in `OLIST.CORE` + dbt tests (40 pass, 1 expected warn)
-- [x] Step 5 — analysis marts in `OLIST.ANALYSIS` + tests (64 pass, 1 expected warn)
+- [x] Step 5 — analysis marts in `OLIST.ANALYSIS` + 46 dbt tests (45 pass, 1 expected warn)
 - [x] Step 6 — Python analysis (6a delivery, 6b review impact, 6c retention/reconciliation/cost)
