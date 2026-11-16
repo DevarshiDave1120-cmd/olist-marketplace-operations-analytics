@@ -21,3 +21,6 @@ logs/
 
 # Local build guide (not part of the public repo)
 olist_project_guide.md
+
+# Working notes (kept locally, not in the repo)
+CLAUDE.md
